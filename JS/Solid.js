@@ -1,9 +1,21 @@
+function makeid()
+{
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for( var i=0; i < 15; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
+
 var Solid = Class.Extends({
-  init:function(x,y,velocity,velocityX,elasticity){
+  init:function(x,y,velocity,velocityX,elasticity,width,height){
+  	this.id = makeid();
     this.x = x;
     this.y = y;
-    this.width = 5;
-    this.height = 5;
+    this.width = width || 1;
+    this.height = height ||  1;
     this.velocity = velocity;
     this.velocityX  =  velocityX || 0;
     this.elasticity = elasticity || 0

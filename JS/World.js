@@ -7,9 +7,10 @@ var World = Class.Extends({
     this.canvas = canvas
     this.ctx = this.canvas.getContext('2d')
     this.rendering = true;
-	requestAnimationFrame(function(){
-		myWorld.loop.call(myWorld);
-	})
+    window.setInterval(this.loop.bind(this),1)
+	// requestAnimationFrame(function(){
+	// 	myWorld.loop.call(myWorld);
+	// })
     this.objects = [];
   },
   loop : function(){
@@ -17,13 +18,8 @@ var World = Class.Extends({
   	if (this.rendering == true){
   		this.render();  		
   	}else{
-  		console.log('testte')
   		this.derender();
   	}
-
-  	requestAnimationFrame(function(){
-		myWorld.loop.call(myWorld);
-	})
   },
   setGravity : function(x){
   	this.gravity = x
@@ -31,46 +27,68 @@ var World = Class.Extends({
   render : function(){
   	if (this.rendering == true){
   	for(o in this.objects){
-  		// this.wind += 0.002;
 
-  		if (this.objects[o].y>=this.height || this.objects[o].y<0){
+
+
+  		if (this.objects[o].y+this.objects[o].height>=this.height || this.objects[o].y<0){
 			this.objects[o].impact()
   		}
 
-  		if (this.objects[o].x>=this.width || this.objects[o].x<0){
+  		if (this.objects[o].x+this.objects[0].width>=this.width || this.objects[o].x<0){
 			this.objects[o].impactLateral()
   		}
-  		this.objects[o].velocity += this.gravity
-  		this.objects[o].y += this.objects[o].velocity
+
+
   		if (this.objects[o].velocity > 20){
   			this.objects[o].velocity = 20
   		}else if(this.objects[o].velocity < -20){
   			this.objects[o].velocity = -20
   		}
-  		this.objects[o].velocityX += this.wind
+  		
   		if (this.objects[o].velocityX > 20){
   			this.objects[o].velocityX = 20
   		}else if(this.objects[o].velocityX < -20){
   			this.objects[o].velocityX = -20
   		}
+
+
+
+  		this.objects[o].velocity += this.gravity
+  		this.objects[o].y += this.objects[o].velocity
   		this.objects[o].x += this.objects[o].velocityX
+  		this.objects[o].velocityX += this.wind
+
+  		this.hitTest(this.objects[o],this.objects)
+
 
 		this.objects[o].render();
   	}
   }
-
   },
-  derender : function(){
-  	this.rendering = false;
-  	for(o in this.objects){
-  		// this.wind += 0.002;
+  hitTest :function(x,z){
 
-  		this.objects[o].velocity -= this.gravity
-  		this.objects[o].y -= this.objects[o].velocity
-  		this.objects[o].velocityX -= this.wind
-  		this.objects[o].x -= this.objects[o].velocityX
-		this.objects[o].render();
+  	for(a in z){
+  		if (z[a].id !== x.id){
+	  		if (z[a].x < x.x + x.width  && z[a].x + z[a].width  > x.x &&
+				z[a].y < x.y + x.height && z[a].y + z[a].height > x.y) {
+	  			this.colide(z[a],x);
+			}
+		}
   	}
+  },
+  colide : function(objectA,objectB){
+  	var velocityA = objectA.velocity;
+  	var velocityB = objectB.velocity;
+
+  	objectA.velocity = -(velocityA-velocityB);
+  	objectB.velocity = -(velocityB-velocityA);
+
+  	var velocityXA = -(objectA.velocityX);
+  	var velocityXB = -(objectB.velocityX);
+
+  	objectA.velocityX = velocityXA-velocityXB;
+  	objectB.velocityX = velocityXB-velocityXA;
+
   },
   append : function(obj){
   	// if (obj intanceof Solid){
@@ -79,3 +97,17 @@ var World = Class.Extends({
   	// }
   }
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+

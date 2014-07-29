@@ -1,7 +1,7 @@
-var myWorld = new World(0.10,document.getElementById('tela'),0.00,1000,1000)
+var myWorld = new World(0.01,document.getElementById('tela'),0.01,1000,1000)
 
-// var mySquare = new Solid(30,100,-4,2,1.2);
-// var mySquare2 = new Solid(100,100,-2);
+// var mySquare = new Solid(30,100,1,2,1.2,50,50);
+// var mySquare2 = new Solid(100,100,2,1,1.2,50,50);
 
 // myWorld.append(mySquare);
 // myWorld.append(mySquare2);
@@ -16,7 +16,8 @@ var myWorld = new World(0.10,document.getElementById('tela'),0.00,1000,1000)
 // 	// myWorld.wind = Math.random()-0.5;
 // })
 
-	// myWorld.append(new Solid(20,20,1,1,0.8))
+	// myWorld.append(new Solid(0,0,1,0,1.2))
+	// myWorld.append(new Solid(100,300,1,0,1.2))
 
 
 	for (var parts = 10; parts >= 0; parts--) {
@@ -27,10 +28,10 @@ var myWorld = new World(0.10,document.getElementById('tela'),0.00,1000,1000)
 		// 	(Math.random()-0.5)*10),1.2
 		// )
 		myWorld.append(new Solid(
-			250,
-			250,
-			(Math.random()-0.5)*10,
-			(Math.random()-0.5)*10,
-			1.2))
+			(Math.random())*800,
+			(Math.random())*800,
+			0,
+			0,
+			1.2,10,10))
 
 	};
