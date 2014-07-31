@@ -1,3 +1,40 @@
+
+var Solid = Class.Extends({
+  init:function(props){
+  	this.id = makeid();
+    this.x = props.x || 0;
+    this.y = props.y || 0;
+    this.width = props.width || 1;
+    this.height = props.height || 1;
+    this.velocityY = props.velocityY || 0;
+    this.velocityX = props.velocityX || 0;
+    this.elasticity = props.elasticity || 0;
+    this.color = props.color || "#FF0000";
+
+
+  },
+  render : function(){
+      this.World.ctx.fillStyle=this.color;
+  		// this.World.ctx.fillRect(this.x,this.y,this.width,this.height);
+      this.World.ctx.beginPath();
+      this.World.ctx.arc(this.x,this.y,this.width,0,2*Math.PI);
+      this.World.ctx.stroke();
+  },
+  impact : function(){
+    if (Math.abs(this.velocityY) < 1){
+      this.velocityY = 0;
+    }else{
+      this.velocityY = -(this.velocityY*this.elasticity);
+    }
+  	
+  	this.velocityX = this.velocityX*this.elasticity
+  },
+  impactLateral : function(){
+  	this.velocityX = -(this.velocityX*this.elasticity)
+  }
+})
+
+
 function makeid()
 {
     var text = "";
@@ -8,30 +45,3 @@ function makeid()
 
     return text;
 }
-
-var Solid = Class.Extends({
-  init:function(x,y,velocity,velocityX,elasticity,width,height){
-  	this.id = makeid();
-    this.x = x;
-    this.y = y;
-    this.width = width || 1;
-    this.height = height ||  1;
-    this.velocity = velocity;
-    this.velocityX  =  velocityX || 0;
-    this.elasticity = elasticity || 0
-  },
-  render : function(){
-  		this.World.ctx.fillRect(this.x,this.y,this.width,this.height);
-  		// this.World.ctx.fillStyle('"rgb(20,50,40)"');
-  },
-  jump : function (){
-  	this.velocity = -20;
-  },
-  impact : function(){
-  	this.velocity = -(this.velocity*this.elasticity)
-  	this.velocityX = this.velocityX*this.elasticity
-  },
-  impactLateral : function(){
-  	this.velocityX = -(this.velocityX*this.elasticity)
-  }
-})
